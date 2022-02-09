@@ -9,7 +9,7 @@ public void draw(){
 }
 
 public void myFractal(float x, float y, float size){ 
-  circle(x, y, size);
+  ellipse(x, y, size, size);
   if (size > 10){
   myFractal(x-30, y-30, size/1.5);
   myFractal(x+30, y-30, size/1.5);
