@@ -1,19 +1,66 @@
-public void setup(){
-  size(500, 500);
-  rectMode(CENTER);
+public void setup()
+{
+  size(600, 600);  
+  background(255);
+  noLoop();
 }
 
-public void draw(){
-  background(0);
-  myFractal(250, 250, 300);
+public void draw()
+{
+  background(255);
+  Cluster c = new Cluster(5, 300, 300, 50); // initial number of segments in the tendril and starting (x,y) coordinate
+  c.show();
+}
+public void mousePressed()
+{
+  redraw();
 }
 
-public void myFractal(float x, float y, float size){ 
-  ellipse(x, y, size, size);
-  if (size > 10){
-  myFractal(x-30, y-30, size/1.5);
-  myFractal(x+30, y-30, size/1.5);
-  myFractal(x-30, y+30, size/1.5);
-  myFractal(x+30, y+30, size/1.5);
+public class Cluster
+{
+    public final static int NUM_STEMS = 7; //number of tendrils per cluster
+    float leng;
+    float myX, myY;
+    int myNumSegments;
+    float myAngle;
+    float endX, endY;
+    
+    public Cluster(float len, float x, float y, int seg)
+    {
+      leng = len;  
+      myX = x;
+      myY = y;
+      myNumSegments = seg;
+    }
+    
+    void show(){
+      strokeWeight(1.5);
+      for (int x = 0; x < 7; x++){
+      float startX = myX;
+      float startY = myY;
+      myAngle += ((2*PI)/7)*x;
+      for (int i = 0; i < myNumSegments; i++){
+        if (myNumSegments == 10){
+          stroke(#FD0B0B);
+        } else if (myNumSegments == 2){
+          stroke(#FFEC00);
+        } else {
+          stroke(#00ABFF);
+        }
+        myAngle += (float)(Math.random()*0.4)-0.2;
+        System.out.println(myAngle);
+        endX = startX + (float)Math.cos(myAngle) * leng;
+        endY = startY + (float)Math.sin(myAngle) * leng;
+        line(startX, startY, endX, endY);
+        startX = endX;
+        startY = endY;
+        stroke(#000000);
+      }
+      if (myNumSegments >= 1){
+      Cluster lol = new Cluster(5, endX, endY, myNumSegments/5);
+      lol.show();
+      } 
+      
+    }
   }
 }
